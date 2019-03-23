@@ -18,7 +18,7 @@ Source code of backend of school [IT courses project](https://github.com/MartinK
 ### 2. Clone repository
 
 ```bash
-git clone https://github.com/MartinKristof/it-courses-school.git
+git clone https://github.com/MartinKristof/it-school-backend.git
 ```
 
 ### 3. Go to project folder
