@@ -34,7 +34,7 @@ cd it-school-backend
 * Install [PHP 7.1+](https://launchpad.net/~ondrej/+archive/ubuntu/php) for your OS
 
 ### 6. Install Composer
-* Install [Composer for your PS](https://getcomposer.org/download/)
+* Install [Composer for your OS](https://getcomposer.org/download/)
 
 ## Build
 
