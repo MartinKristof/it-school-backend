@@ -18,7 +18,7 @@ Source code of backend of school [IT courses project](https://github.com/MartinK
 ### 2. Clone repository
 
 ```bash
-git clone git@github.com:MartinKristof/it-school-backend.git
+git clone https://github.com/MartinKristof/it-courses-school.git
 ```
 
 ### 3. Go to project folder
@@ -45,11 +45,17 @@ composer
 ```
 
 ### 8. Compose up
+#### Turn on
 - run command via CLI on project directory:
 ```bash
 docker-compose up
 ```
 - It will run MySQL and PHPMyAdmin on URL http://localhost:789/ (username: root, password: root)
+#### Shut down
+#### 
+```bash
+docker-compose down
+```
 
 ## Dev server
 
