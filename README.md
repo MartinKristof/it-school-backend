@@ -67,12 +67,6 @@ bin/console server:start
 - install pcntl extension if needed
 - it will show URL of symfony application to console
 
-Restart server
-- run command via CLI on project directory:
-```bash
-bin/console server:restart
-```
-
 Stop server
 - run command via CLI on project directory:
 ```bash
