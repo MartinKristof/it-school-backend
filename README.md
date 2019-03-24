@@ -65,7 +65,7 @@ docker-compose down
 bin/console server:start
 ```
 - install pcntl extension if needed
-- it will show URL of symfony application to console
+- it will show URL of symfony application to console (when you use virtual machine use `bin/console server:start 0.0.0.0:8000` - running on http://0.0.0.0:8000)
 
 Stop server
 - run command via CLI on project directory:
