@@ -16,8 +16,26 @@ class Student
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="array")
+     * @ORM\ManyToMany(targetEntity="Course")
+     */
+    private $favorites = [];
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFavorites(): ?array
+    {
+        return $this->favorites;
+    }
+
+    public function setFavorites(array $favorites): self
+    {
+        $this->favorites = $favorites;
+
+        return $this;
     }
 }

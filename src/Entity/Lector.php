@@ -16,8 +16,26 @@ class Lector
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="array")
+     * @ORM\ManyToMany(targetEntity="Tag")
+     */
+    private $specialization = [];
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getSpecialization(): ?array
+    {
+        return $this->specialization;
+    }
+
+    public function setSpecialization(array $specialization): self
+    {
+        $this->specialization = $specialization;
+
+        return $this;
     }
 }

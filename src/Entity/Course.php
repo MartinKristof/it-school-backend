@@ -35,6 +35,7 @@ class Course
 
     /**
      * @ORM\Column(type="array")
+     * @ORM\ManyToMany(targetEntity="Address")
      */
     private $addresses = [];
 
@@ -45,6 +46,7 @@ class Course
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @ORM\ManyToMany(targetEntity="Image")
      */
     private $images = [];
 
@@ -55,16 +57,19 @@ class Course
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @ORM\OneToMany(targetEntity="Rating")
      */
     private $ratings = [];
 
     /**
      * @ORM\Column(type="array")
+     * @ORM\ManyToMany(targetEntity="Tag")
      */
     private $tags = [];
 
     /**
-     * @ORM\Column(type="object")
+     * @ORM\Column(type="integer")
+     * @ORM\OneToOne(targetEntity="Summary")
      */
     private $summary;
 
@@ -181,12 +186,12 @@ class Course
         return $this;
     }
 
-    public function getSummary()
+    public function getSummary(): ?int
     {
         return $this->summary;
     }
 
-    public function setSummary($summary): self
+    public function setSummary(int $summary): self
     {
         $this->summary = $summary;
 
