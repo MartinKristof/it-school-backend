@@ -13,45 +13,40 @@ class Address
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
+     * @var string
      */
     private $street;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
+     * @var string
      */
     private $city;
 
-    public function getId(): ?int
+    public function __construct(string $street, string $city)
+    {
+        $this->street = $street;
+        $this->city = $city;
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getStreet(): ?string
+    public function getStreet(): string
     {
         return $this->street;
     }
 
-    public function setStreet(string $street): self
-    {
-        $this->street = $street;
-
-        return $this;
-    }
-
-    public function getCity(): ?string
+    public function getCity(): string
     {
         return $this->city;
-    }
-
-    public function setCity(string $city): self
-    {
-        $this->city = $city;
-
-        return $this;
     }
 }

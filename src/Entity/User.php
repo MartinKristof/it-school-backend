@@ -8,69 +8,79 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"student": "Student", "lector": "Lector"})
  */
-class User
+abstract class User
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
+     * @var string
      */
     private $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
+     * @var string
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
+     * @var string
      */
-    private $password;
+    private $passwordHash;
 
-    public function getId(): ?int
+
+    public function __construct(string $name, string $username)
+    {
+        $this->name = $name;
+        $this->username = $username;
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function getPasswordHash(): string
     {
-        $this->username = $username;
-
-        return $this;
+        return $this->passwordHash;
     }
 
-    public function getPassword(): ?string
+    public function setPasswordHash(string $password, int $cost = 13): void
     {
-        return $this->password;
+        $options = ['cost' => $cost];
+        $passwordHash = (string) password_hash($password, PASSWORD_BCRYPT, $options);
+        $this->setPasswordHash($passwordHash);
     }
 
-    public function setPassword(string $password): self
+    public function verifyPassword(string $password): bool
     {
-        $this->password = $password;
+        return password_verify($password, $this->getPasswordHash());
+    }
 
-        return $this;
+    public function getPassword(): string
+    {
+        return $this->passwordHash;
     }
 }
