@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +32,8 @@ class Rating
 
     public function __construct(string $text, int $value)
     {
+        Assertion::between($value, 1,5);
+
         $this->text = $text;
         $this->value = $value;
     }
