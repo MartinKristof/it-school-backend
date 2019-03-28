@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -13,45 +13,40 @@ class Image
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
+     * @var string
      */
-    private $urlpath;
+    private $urlPath;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string")
+     * @var string
      */
     private $title;
 
-    public function getId(): ?int
+    public function __construct(string $urlPath, string $title)
+    {
+        $this->urlPath = $urlPath;
+        $this->title = $title;
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getUrlpath(): ?string
+    public function getUrlPath(): string
     {
-        return $this->urlpath;
+        return $this->urlPath;
     }
 
-    public function setUrlpath(string $urlpath): self
-    {
-        $this->urlpath = $urlpath;
-
-        return $this;
-    }
-
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
     }
 }

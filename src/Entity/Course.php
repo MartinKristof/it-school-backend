@@ -1,8 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,181 +16,180 @@ class Course
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
+     * @var string
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @var string
      */
     private $description;
 
     /**
      * @ORM\Column(type="float")
+     * @var float
      */
     private $price;
 
     /**
-     * @ORM\Column(type="array")
+     * Owning side
+     *
+     * @ORM\ManyToMany(targetEntity="Address")
+     * @ORM\JoinTable(name="courses_addresses",
+     *     joinColumns={@ORM\JoinColumn(name="course_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="address_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     * @var ArrayCollection|Address[]
      */
-    private $addresses = [];
+    private $addresses;
 
     /**
      * @ORM\Column(type="float")
+     * @var float
      */
     private $duration;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * Owning side
+     *
+     * @ORM\ManyToMany(targetEntity="Image")
+     * @ORM\JoinTable(name="courses_images",
+     *     joinColumns={@ORM\JoinColumn(name="course_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     * @var ArrayCollection|Image[]
      */
-    private $images = [];
+    private $images;
 
     /**
      * @ORM\Column(type="text")
+     * @var string
      */
     private $content;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * Owning side
+     *
+     * @ORM\ManyToMany(targetEntity="Rating")
+     * @ORM\JoinTable(name="courses_ratings",
+     *     joinColumns={@ORM\JoinColumn(name="course_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="rating_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     * @var ArrayCollection|Rating[]
      */
-    private $ratings = [];
+    private $ratings;
 
     /**
-     * @ORM\Column(type="array")
+     * Owning side
+     *
+     * @ORM\ManyToMany(targetEntity="Tag")
+     * @ORM\JoinTable(name="courses_tags",
+     *     joinColumns={@ORM\JoinColumn(name="course_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     * @var ArrayCollection|Tag[]
      */
-    private $tags = [];
+    private $tags;
 
     /**
-     * @ORM\Column(type="object")
+     * Owning side
+     *
+     * @ORM\OneToOne(targetEntity="Summary")
+     * @ORM\JoinColumn(name="summary_id", referencedColumnName="id")
+     * @var Summary
      */
     private $summary;
 
-    public function getId(): ?int
+    public function __construct(
+        string $title,
+        string $description,
+        float $price,
+        float $duration,
+        string $content
+    ) {
+        $this->title = $title;
+        $this->description = $description;
+        $this->price = $price;
+        $this->addresses = new ArrayCollection();
+        $this->duration = $duration;
+        $this->images = new ArrayCollection();
+        $this->content = $content;
+        $this->ratings = new ArrayCollection();
+        $this->tags = new ArrayCollection();
+        $this->summary = new ArrayCollection();
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getPrice(): ?float
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): self
+    /**
+     * @return Address[]
+     */
+    public function getAddresses(): array
     {
-        $this->price = $price;
-
-        return $this;
+        return $this->addresses->toArray();
     }
 
-    public function getAddresses(): ?array
-    {
-        return $this->addresses;
-    }
-
-    public function setAddresses(array $addresses): self
-    {
-        $this->addresses = $addresses;
-
-        return $this;
-    }
-
-    public function getDuration(): ?float
+    public function getDuration(): float
     {
         return $this->duration;
     }
 
-    public function setDuration(float $duration): self
+    /**
+     * @return Image[]
+     */
+    public function getImages(): array
     {
-        $this->duration = $duration;
-
-        return $this;
+        return $this->images->toArray();
     }
 
-    public function getImages(): ?array
-    {
-        return $this->images;
-    }
-
-    public function setImages(?array $images): self
-    {
-        $this->images = $images;
-
-        return $this;
-    }
-
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    /**
+     * @return Rating[]
+     */
+    public function getRatings(): array
     {
-        $this->content = $content;
-
-        return $this;
+        return $this->ratings->toArray();
     }
 
-    public function getRatings(): ?array
+    /**
+     * @return Tag[]
+     */
+    public function getTags(): array
     {
-        return $this->ratings;
-    }
-
-    public function setRatings(?array $ratings): self
-    {
-        $this->ratings = $ratings;
-
-        return $this;
-    }
-
-    public function getTags(): ?array
-    {
-        return $this->tags;
-    }
-
-    public function setTags(array $tags): self
-    {
-        $this->tags = $tags;
-
-        return $this;
+        return $this->tags->toArray();
     }
 
     public function getSummary()
     {
         return $this->summary;
-    }
-
-    public function setSummary($summary): self
-    {
-        $this->summary = $summary;
-
-        return $this;
     }
 }
