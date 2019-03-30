@@ -112,7 +112,8 @@ class Course
         string $description,
         float $price,
         float $duration,
-        string $content
+        string $content,
+        string $summary
     ) {
         $this->title = $title;
         $this->description = $description;
@@ -123,7 +124,7 @@ class Course
         $this->content = $content;
         $this->ratings = new ArrayCollection();
         $this->tags = new ArrayCollection();
-        $this->summary = new ArrayCollection();
+        $this->summary = $summary;
     }
 
     public function getId(): int
