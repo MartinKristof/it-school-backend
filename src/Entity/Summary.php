@@ -2,9 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "denormalization_context"={"api_allow_update":true}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\SummaryRepository")
  */
 class Summary

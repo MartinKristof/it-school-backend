@@ -2,14 +2,32 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Serializable;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\StudentRepository")
  */
-class Student extends User
+class Student implements Serializable
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @var User
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
     /**
      * @ORM\ManyToMany(targetEntity="Course")
      * @ORM\JoinTable(name="students_favorite_courses",
@@ -20,10 +38,9 @@ class Student extends User
      */
     private $favoriteCourses;
 
-    public function __construct(string $name, string $username)
+    public function __construct(User $user)
     {
-        parent::__construct($name, $username);
-
+        $this->user = $user;
         $this->favoriteCourses = new ArrayCollection();
     }
 
@@ -33,5 +50,29 @@ class Student extends User
     public function getFavoriteCourses(): array
     {
         return $this->favoriteCourses->toArray();
+    }
+
+    public function addFavoriteCourse(Course $course)
+    {
+        $this->favoriteCourses->add($course);
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /** @see Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize([
+            $this->user,
+        ]);
+    }
+
+    /** @see Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list ($this->user) = unserialize($serialized, ['allowed_classes' => false]);
     }
 }

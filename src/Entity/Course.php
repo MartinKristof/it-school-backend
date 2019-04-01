@@ -75,13 +75,14 @@ class Course
     private $content;
 
     /**
+     * @var bool
+     */
+    private $favorite = false;
+
+    /**
      * Owning side
      *
-     * @ORM\ManyToMany(targetEntity="Rating")
-     * @ORM\JoinTable(name="courses_ratings",
-     *     joinColumns={@ORM\JoinColumn(name="course_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="rating_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
+     * @ORM\OneToMany(targetEntity="Rating", mappedBy="course", cascade={"persist"})
      * @var ArrayCollection|Rating[]
      */
     private $ratings;
@@ -102,7 +103,6 @@ class Course
      * Owning side
      *
      * @ORM\OneToOne(targetEntity="Summary")
-     * @ORM\JoinColumn(name="summary_id", referencedColumnName="id")
      * @var Summary
      */
     private $summary;
@@ -113,7 +113,7 @@ class Course
         float $price,
         float $duration,
         string $content,
-        string $summary
+        Summary $summary
     ) {
         $this->title = $title;
         $this->description = $description;
@@ -193,4 +193,35 @@ class Course
     {
         return $this->summary;
     }
+
+    public function isFavorite(): bool
+    {
+        return $this->favorite;
+    }
+
+    public function addAddress(Address $address)
+    {
+        $this->addresses->add($address);
+    }
+
+    public function addImage(Image $image)
+    {
+        $this->images->add($image);
+    }
+
+    public function addRating(Rating $rating)
+    {
+        $this->ratings->add($rating);
+    }
+
+    public function addTag(Tag $tag)
+    {
+        $this->tags->add($tag);
+    }
+
+    public function setFavorite(bool $favorite)
+    {
+        $this->favorite = $favorite;
+    }
+
 }
