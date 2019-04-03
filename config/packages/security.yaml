@@ -1,24 +1,45 @@
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
-    providers:
-        in_memory: { memory: ~ }
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            anonymous: true
+  # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    api:
+      pattern: ^/api/
+      guard:
+        authenticators:
+          - App\Security\TokenAuthenticator
+      provider: user_db_provider
+    main:
+      anonymous: true
+  role_hierarchy:
+    ROLE_ADMIN: [ROLE_API]
 
-            # activate different ways to authenticate
+      # activate different ways to authenticate
 
-            # http_basic: true
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+      # http_basic: true
+      # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
 
-            # form_login: true
-            # https://symfony.com/doc/current/security/form_login_setup.html
+      # form_login: true
+      # https://symfony.com/doc/current/security/form_login_setup.html
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
-    access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+  # Easy way to control access for large sections of your site
+  # Note: Only the *first* access control that matches will be used
+  access_control:
+    # - { path: ^/admin, roles: ROLE_ADMIN }
+    # - { path: ^/api, roles: ROLE_API }
+  encoders:
+    App\Entity\User:
+      algorithm: bcrypt
+      cost: 13
+  providers:
+    user_db_provider:
+      entity:
+        class: App\Entity\User
+        property: apiKey
+    in_memory:
+      memory:
+        users:
+          test:
+            password: $2y$12$1sZXPUAuyLv5PSWigKfjMOtczuaB.nNG7Kou5st6blZ2UB9KBtpy6
+            roles: 'ROLE_ADMIN'
