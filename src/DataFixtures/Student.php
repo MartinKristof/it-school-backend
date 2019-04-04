@@ -13,7 +13,29 @@ class Student extends Fixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         /** @var UserEntity $user */
-        $user = $this->getReference(User::USER_REF);
+        $user = $this->getReference(sprintf("%s_%s", User::USER_REF, 0));
+        $student = new StudentEntity($user);
+
+        $manager->persist($student);
+
+        $manager->flush();
+
+
+        $user = $this->getReference(sprintf("%s_%s", User::USER_REF, 1));
+        $student = new StudentEntity($user);
+
+        $manager->persist($student);
+
+        $manager->flush();
+
+        $user = $this->getReference(sprintf("%s_%s", User::USER_REF, 2));
+        $student = new StudentEntity($user);
+
+        $manager->persist($student);
+
+        $manager->flush();
+
+        $user = $this->getReference(sprintf("%s_%s", User::USER_REF, 3));
         $student = new StudentEntity($user);
 
         $manager->persist($student);
