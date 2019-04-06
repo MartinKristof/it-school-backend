@@ -29,6 +29,16 @@ class Lector implements Serializable
     private $user;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Course")
+     * @ORM\JoinTable(name="lectors_teached_courses",
+     *     joinColumns={@ORM\JoinColumn(name="lector_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="course_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     * @var ArrayCollection|Course[]
+     */
+    private $teachedCourses;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Tag")
      * @ORM\JoinTable(name="lectors_specializations",
      *     joinColumns={@ORM\JoinColumn(name="lector_id", referencedColumnName="id", onDelete="CASCADE")},
@@ -42,6 +52,7 @@ class Lector implements Serializable
     {
         $this->user = $user;
         $this->specializations = new ArrayCollection();
+        $this->teachedCourses = new ArrayCollection();
     }
 
     /**
@@ -55,6 +66,29 @@ class Lector implements Serializable
     public function addSpecialization(Tag $specialization)
     {
         $this->specializations->add($specialization);
+    }
+
+    public function getImage(): Image
+    {
+        return $this->user->getImage();
+    }
+
+    /**
+     * @return Course[]
+     */
+    public function getTeachedCourses(): array
+    {
+        return $this->teachedCourses->toArray();
+    }
+
+    public function addTeachedCourse(Course $course)
+    {
+        $this->teachedCourses->add($course);
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getUser(): User

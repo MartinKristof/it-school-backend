@@ -80,6 +80,11 @@ class Course
     private $favorite = false;
 
     /**
+     * @var ArrayCollection|Lector[]
+     */
+    private $lectors;
+
+    /**
      * Owning side
      *
      * @ORM\OneToMany(targetEntity="Rating", mappedBy="course", cascade={"persist"})
@@ -125,6 +130,7 @@ class Course
         $this->ratings = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->summary = $summary;
+        $this->lectors = new ArrayCollection();
     }
 
     public function getId(): int
@@ -224,4 +230,19 @@ class Course
         $this->favorite = $favorite;
     }
 
+    /**
+     * @return Lector[]
+     */
+    public function getLectors()
+    {
+        return $this->lectors->toArray();
+    }
+
+    /**
+     * @param Lector[]|ArrayCollection $lectors
+     */
+    public function setLectors($lectors)
+    {
+        $this->lectors = $lectors;
+    }
 }

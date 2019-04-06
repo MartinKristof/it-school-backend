@@ -44,6 +44,12 @@ class User implements UserInterface, Serializable
      */
     private $apiKey;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Image")
+     * @var Image
+     */
+    private $image;
+
 
     public function __construct(string $name, string $username)
     {
@@ -96,6 +102,16 @@ class User implements UserInterface, Serializable
     public function getApiKey(): ?string
     {
         return $this->apiKey;
+    }
+
+    public function getImage(): Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(Image $image)
+    {
+        $this->image = $image;
     }
 
     public function setApiKey(string $apiKey): self
