@@ -4,11 +4,18 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *     attributes={
- *         "denormalization_context"={"api_allow_update":true}
+ *     normalizationContext={"groups"={"post"}},
+ *     denormalizationContext={"groups"={"get"}},
+ *     collectionOperations={
+ *         "get",
+ *         "post"
+ *     },
+ *     itemOperations={
+ *         "get",
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SummaryRepository")
@@ -18,6 +25,7 @@ class Summary
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
+     * @Groups({"get", "post"})
      * @ORM\Column(type="integer")
      * @var int
      */
@@ -25,12 +33,14 @@ class Summary
 
     /**
      * @ORM\Column(type="string")
+     * @Groups({"get", "post"})
      * @var string
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"get", "post"})
      * @var string|null
      */
     private $note;

@@ -235,7 +235,7 @@ class Course
      */
     public function getLectors()
     {
-        return $this->lectors->toArray();
+        return $this->lectors;
     }
 
     /**
