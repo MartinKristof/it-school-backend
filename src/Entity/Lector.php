@@ -68,7 +68,7 @@ class Lector implements Serializable
         $this->specializations->add($specialization);
     }
 
-    public function getImage(): Image
+    public function getImage(): ?Image
     {
         return $this->user->getImage();
     }

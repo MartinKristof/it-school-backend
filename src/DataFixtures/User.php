@@ -19,6 +19,17 @@ class User extends Fixture implements OrderedFixtureInterface
 
         $surnameArray = ['Rodgers', 'Stark', 'Banner', 'Romanova', 'Odinson', 'Parker', 'Strange', 'Killmonger'];
 
+        $usernameArray = [
+            'rodgers@mail.com',
+            'stark@mail.com',
+            'banner@mail.com',
+            'romanova@mail.com',
+            'odinson@mail.com',
+            'parker@mail.com',
+            'strange@mail.com',
+            'killmonger@mail.com',
+        ];
+
         $passwordArray = ['1111', '2222', '3333', '4444', '5555', '6666', '7777', '8888'];
 
         $imageArray = [
@@ -52,7 +63,7 @@ class User extends Fixture implements OrderedFixtureInterface
         ];
 
         for ($i = 0; $i < 8; $i++) {
-            $user = new UserEntity($nameArray[$i], $surnameArray[$i]);
+            $user = new UserEntity($nameArray[$i], $surnameArray[$i], $usernameArray[$i]);
 
             $user->setPassword($passwordArray[$i]);
             $user->setApiKey($keyApidArray[$i]);

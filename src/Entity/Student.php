@@ -68,6 +68,14 @@ class Student implements Serializable
         $this->favoriteCourses->add($course);
     }
 
+    /**
+     * @param Course[]|ArrayCollection $favoriteCourses
+     */
+    public function setFavoriteCourses($courses)
+    {
+        $this->favoriteCourses = $courses;
+    }
+
     public function getUser(): User
     {
         return $this->user;
@@ -78,9 +86,9 @@ class Student implements Serializable
         return $this->id;
     }
 
-    public function getImage(): Image
+    public function getImage(): ?Image
     {
-        return $this->user->getImage();
+        return $this->getUser()->getImage();
     }
 
     /**
@@ -89,6 +97,14 @@ class Student implements Serializable
     public function getAttendedCourses(): array
     {
         return $this->attendedCourses->toArray();
+    }
+
+    /**
+     * @param Course[]|ArrayCollection $attendedCourses
+     */
+    public function setAttendedCourses($courses)
+    {
+        $this->attendedCourses = $courses;
     }
 
     public function addAttendedCourse(Course $course)

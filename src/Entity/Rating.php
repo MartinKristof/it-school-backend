@@ -5,20 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *     normalizationContext={"groups"={"post"}},
- *     denormalizationContext={"groups"={"get"}},
- *     collectionOperations={
- *         "get",
- *         "post"
- *     },
- *     itemOperations={
- *         "get",
- *     }
- * )
+ * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\RatingRepository")
  */
 class Rating
@@ -26,7 +15,6 @@ class Rating
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"get", "post"})
      * @ORM\Column(type="integer")
      * @var int
      */
@@ -34,21 +22,18 @@ class Rating
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"get", "post"})
      * @var string
      */
     private $text;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"get", "post"})
      * @var int
      */
     private $value;
 
     /**
      * @var Course
-     * @Groups({"get", "post"})
      * @ORM\ManyToOne(targetEntity="Course", inversedBy="ratings")
      */
     private $course;
