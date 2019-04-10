@@ -19,13 +19,24 @@ class StudentRepository extends ServiceEntityRepository
         parent::__construct($registry, Student::class);
     }
 
+    public function getStudentIdByUserId(int $userId): int
+    {
+        return (int) $this->createQueryBuilder('s')
+            ->select('s.id')
+            ->andWhere('s.user = :userId')
+            ->setParameters(['userId' => $userId])
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function hasCourseFavorite(int $studentId, int $courseId): bool
     {
         return $this->createQueryBuilder('s')
                 ->select('count(c.id)')
                 ->join('s.favoriteCourses', 'c')
                 ->andWhere('s.id = :studentId')
-                ->andWhere(('c.id = :courseId'))
+                ->andWhere('c.id = :courseId')
                 ->setParameters(['studentId' => $studentId, 'courseId' => $courseId])
                 ->orderBy('s.id', 'ASC')
                 ->setMaxResults(10)

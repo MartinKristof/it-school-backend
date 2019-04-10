@@ -19,6 +19,21 @@ class LectorRepository extends ServiceEntityRepository
         parent::__construct($registry, Lector::class);
     }
 
+    /**
+     * @return Lector[] Returns an array of Course objects
+     */
+    public function findLectorsForCourseById(int $courseId): array
+    {
+        return $this->createQueryBuilder('l')
+            ->select('l')
+            ->join('l.teachedCourses', 'c')
+            ->andWhere(('c.id = :courseId'))
+            ->setParameters(['courseId' => $courseId])
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Lector[] Returns an array of Lector objects
     //  */

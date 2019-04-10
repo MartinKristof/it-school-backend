@@ -40,7 +40,7 @@ class Rating
 
     public function __construct(string $text, int $value, Course $course)
     {
-        Assertion::between($value, 1,5);
+        Assertion::between($value, 1, 5);
 
         $this->text = $text;
         $this->value = $value;
@@ -65,5 +65,10 @@ class Rating
     public function getCourse(): Course
     {
         return $this->course;
+    }
+
+    public function setCourse(Course $course)
+    {
+        $this->course = $course;
     }
 }

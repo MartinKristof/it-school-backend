@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Student as StudentEntity;
 use App\Entity\User as UserEntity;
+use App\Entity\Course as CourseEntity;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -15,6 +16,10 @@ class Student extends Fixture implements OrderedFixtureInterface
         /** @var UserEntity $user */
         $user = $this->getReference(sprintf("%s_%s", User::USER_REF, 0));
         $student = new StudentEntity($user);
+
+        /** @var CourseEntity $course */
+        $course = $this->getReference(sprintf("%s_%s", COURSE::COURSE_REFERENCE, 0));
+        $student->addFavoriteCourse($course);
 
         $manager->persist($student);
 
@@ -50,6 +55,6 @@ class Student extends Fixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 3;
+        return 5;
     }
 }

@@ -6,9 +6,34 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={
+ *       "get"={
+ *          "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
+ *           "normalization_context"={
+ *             "groups"={"get"}
+ *           }
+ *       },
+ *       "post"={
+ *          "denormalization_context"={
+ *             "groups"={"post"}
+ *           },
+ *           "normalization_context"={
+ *              "groups"={"get"}
+ *           }
+ *       }
+ *     },
+ *     itemOperations={
+ *      "get"={
+ *         "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
+ *         "normalization_context"={
+ *            "groups"={"get"}
+ *          }
+ *       },
+ * })
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User implements UserInterface, Serializable
@@ -16,6 +41,7 @@ class User implements UserInterface, Serializable
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
+     * @Groups({"get", "post"})
      * @ORM\Column(type="integer")
      * @var int
      */
@@ -24,31 +50,50 @@ class User implements UserInterface, Serializable
     /**
      * @ORM\Column(type="string")
      * @var string
+     * @Groups({"get", "post"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string")
+     * @Groups({"get", "post"})
+     * @var string
+     */
+    private $surname;
+
+    /**
+     * @ORM\Column(type="string", unique=true)
+     * @Groups({"get", "post"})
      * @var string
      */
     private $username;
 
     /**
      * @ORM\Column(type="string")
+     * @Groups({"post"})
      * @var string
      */
     private $passwordHash;
 
     /**
      * @ORM\Column(type="string", length=64, unique=true))
+     * @Groups({"post"})
      */
     private $apiKey;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Image")
+     * @Groups({"get", "post"})
+     * @var Image
+     */
+    private $image;
 
-    public function __construct(string $name, string $username)
+
+    public function __construct(string $name, string $username, string $surname)
     {
         $this->name = $name;
         $this->username = $username;
+        $this->surname = $surname;
     }
 
     public function getId(): int
@@ -64,6 +109,16 @@ class User implements UserInterface, Serializable
     public function getUsername(): string
     {
         return $this->username;
+    }
+
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname)
+    {
+        $this->surname = $surname;
     }
 
     public function getPasswordHash(): string
@@ -96,6 +151,16 @@ class User implements UserInterface, Serializable
     public function getApiKey(): ?string
     {
         return $this->apiKey;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image)
+    {
+        $this->image = $image;
     }
 
     public function setApiKey(string $apiKey): self

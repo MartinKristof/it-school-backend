@@ -4,17 +4,17 @@ namespace App\DataFixtures;
 
 use App\Entity\Address;
 use App\Entity\Course as CourseEntity;
+use App\Entity\Tag as TagEntity;
 use App\Entity\Image;
 use App\Entity\Rating;
 use App\Entity\Summary;
-use App\Entity\Tag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class Course extends Fixture implements OrderedFixtureInterface
 {
-    public const TAG_REFERENCE = 'tag-user';
+    const COURSE_REFERENCE = 'course-ref';
 
     public function load(ObjectManager $manager)
     {
@@ -30,30 +30,17 @@ class Course extends Fixture implements OrderedFixtureInterface
                 'Java - Od začátečníka k expertovi - Učebna'),
         ];
 
-        $tagArray = [
-            new Tag('front-end'),
-            new Tag('back-end'),
-            new Tag('front-end'),
-            new Tag('back-end'),
-        ];
-
         $addressArray = [
-            new Address('U Vody', 'Prague')
-            ,
-            new Address('Falesna 123', 'Brno')
-            ,
-            new Address('U Pergamnky 69', 'Prague')
-            ,
+            new Address('U Vody', 'Prague'),
+            new Address('Falesna 123', 'Brno'),
+            new Address('U Pergamnky 69', 'Prague'),
             new Address('Dělnická 11', 'Prague'),
         ];
 
         $summaryArray = [
-            new Summary('Pro začátečníky', '')
-            ,
-            new Summary('Pro Mírně pokročilé', '')
-            ,
-            new Summary('Pro středně pokročilé', '')
-            ,
+            new Summary('Pro začátečníky', ''),
+            new Summary('Pro Mírně pokročilé', ''),
+            new Summary('Pro středně pokročilé', ''),
             new Summary('Pro pokročilé', ''),
         ];
 
@@ -82,9 +69,6 @@ class Course extends Fixture implements OrderedFixtureInterface
             $manager->persist($summaryArray[$i]);
             $manager->persist($imageArray[$i]);
             $manager->persist($addressArray[$i]);
-            $manager->persist($tagArray[$i]);
-
-            $this->addReference(sprintf("%s_%s", self::TAG_REFERENCE, $i), $tagArray[$i]);
 
             $course = new CourseEntity(
                 $titleArray[$i],
@@ -96,10 +80,15 @@ class Course extends Fixture implements OrderedFixtureInterface
             );
             $course->addAddress($addressArray[$i]);
             $course->addImage($imageArray[$i]);
-            $course->addTag($tagArray[$i]);
+
+            /** @var TagEntity $tag */
+            $tag = $this->getReference(sprintf("%s_%s", TAG::TAG_REFERENCE, $i));
+            $course->addTag($tag);
 
             $rating = new Rating($ratingArray[$i], $ratingValueArray[$i], $course);
             $course->addRating($rating);
+
+            $this->addReference(sprintf("%s_%s", self::COURSE_REFERENCE, $i), $course);
 
             $manager->persist($course);
 
@@ -114,6 +103,6 @@ class Course extends Fixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 2;
+        return 3;
     }
 }
